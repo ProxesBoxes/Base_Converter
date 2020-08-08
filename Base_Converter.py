@@ -2,17 +2,10 @@ import string
 import math
 
 # All bases start with
-standard_apha = list(string.ascii_uppercase) + list(string.ascii_lowercase)
+
 standard_base_10 = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-# standard_binary = standard_base_10[:1]
-# standard_base_8 = standard_base_10[:7]
-# standard_hex = standard_base_10 + list(string.ascii_uppercase)[:6]
-# standard_base_32 = standard_base_10 + list(string.ascii_uppercase)[:22]
-# standard_base_32_rfc = list(string.ascii_uppercase) + standard_base_10[2:7]
-# standard_base_63 = standard_base_10 + list(string.ascii_uppercase) + ["[", "\\", "]", "^", "_", "'"] + list(string.ascii_lowercase)
-
-
-
+standard_ascii = list(string.ascii_uppercase) + ["[", "\\", "]", "^", "_", "`"] + list(string.ascii_lowercase) + \
+    ["{", "|", "}", "~", "DEL"]
 
 def print_and_get_choices():
     print("2 standard_binary")
@@ -29,16 +22,22 @@ def split(word):
     return [char for char in word]
 
 
+def generate_unicodes(base):
+    unicode_values = []
+    for i in range(base):
+        unicode_values += ["U+" + "{:04X}".format(i)]
+    return unicode_values
+
+
 def get_charset(base):
     ''' False denotes custom base was provided '''
     if base <= 10:
         return standard_base_10[:base]
-    elif base <= 64:
-        return standard_base_10 + standard_apha[:base - 10]
-    elif base == 64:
-        return standard_base_10 + standard_apha + ["+", "/"]
+    elif base <= len(standard_base_10 + standard_ascii[:base - 10]):
+        return standard_base_10 + standard_ascii[:base - 10]
 
-    return False
+    return generate_unicodes(base)
+
 
 class converter:
     starting_base = 0
@@ -52,12 +51,15 @@ class converter:
         # start with converting to base 10 value so we can maths
         position = 0
         base_10_value = 0
-        self.starting_base_value.reverse()
-        for char in self.starting_base_value:
-            i = self.starting_base_chars.index(char)
-            base_10_value += i * (math.pow(self.starting_base, position))
-            position += 1
+        if self.starting_base_value[:2] != "U+":
+            self.starting_base_value.reverse()
 
+            for char in self.starting_base_value:
+                i = self.starting_base_chars.index(char)
+                base_10_value += i * (math.pow(self.starting_base, position))
+                position += 1
+        else:
+            base_10_value += self.starting_base_chars.index(self.starting_base_value)
         self.recuse_convert(base_10_value)
 
     def recuse_convert(self, value):
@@ -81,7 +83,10 @@ if __name__ == '__main__':
 
     print("select ending base:")
     lets_convert.ending_base = print_and_get_choices()
-    lets_convert.ending_base_chars = get_charset(lets_convert.ending_base)
+    if lets_convert.starting_base < 65:
+        lets_convert.ending_base_chars = get_charset(lets_convert.ending_base)
+    else:
+        lets_convert.ending_base_chars = generate_unicodes(lets_convert.ending_base)
 
     lets_convert.convert()
 

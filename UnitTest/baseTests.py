@@ -13,7 +13,10 @@ class MyTestCase(unittest.TestCase):
         self.my_converter.starting_base = starting
         self.my_converter.starting_base_chars = Base_Converter.get_charset(self.my_converter.starting_base)
         self.my_converter.ending_base = ending
-        self.my_converter.ending_base_chars = Base_Converter.get_charset(self.my_converter.ending_base)
+        if self.my_converter.starting_base < 65:
+            self.my_converter.ending_base_chars = Base_Converter.get_charset(self.my_converter.ending_base)
+        else:
+            self.my_converter.ending_base_chars = Base_Converter.generate_unicodes(self.my_converter.ending_base)
 
     def test_2_to_16_1(self):
         self.set_bases(2, 16)
@@ -124,6 +127,43 @@ class MyTestCase(unittest.TestCase):
         self.my_converter.starting_base_value = Base_Converter.split("201")
         self.my_converter.convert()
         self.assertEqual("1Z", "".join(self.my_converter.ending_base_value))
+
+    def test_7_to_64_2(self):
+        self.set_bases(7, 64)
+        self.my_converter.starting_base_value = Base_Converter.split("216")
+        self.my_converter.convert()
+        self.assertEqual("1f", "".join(self.my_converter.ending_base_value))
+
+    def test_7_to_64_3(self):
+        self.set_bases(7, 64)
+        self.my_converter.starting_base_value = Base_Converter.split("214")
+        self.my_converter.convert()
+        self.assertEqual("1d", "".join(self.my_converter.ending_base_value))
+
+    def test_7_to_64_4(self):
+        self.set_bases(7, 64)
+        self.my_converter.starting_base_value = Base_Converter.split("203")
+        self.my_converter.convert()
+        self.assertEqual("1\\", "".join(self.my_converter.ending_base_value))
+
+    def test_907_to_57_1(self):
+        self.set_bases(907, 57)
+        self.my_converter.starting_base_value = "U+0061"
+        self.my_converter.convert()
+        self.assertEqual("U+0001U+0028", "".join(self.my_converter.ending_base_value))
+
+    def test_907_to_57_2(self):
+        self.set_bases(907, 57)
+        self.my_converter.starting_base_value = "U+0072"
+        self.my_converter.convert()
+        self.assertEqual("U+0002U+0000", "".join(self.my_converter.ending_base_value))
+
+    def test_907_to_57_3(self):
+        self.set_bases(907, 57)
+        self.my_converter.starting_base_value = "U+0065"
+        self.my_converter.convert()
+        self.assertEqual("U+0001U+002C", "".join(self.my_converter.ending_base_value))
+
 
 if __name__ == '__main__':
     unittest.main()
