@@ -5,7 +5,7 @@ import math
 
 standard_base_10 = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 standard_ascii = list(string.ascii_uppercase) + ["[", "\\", "]", "^", "_", "`"] + list(string.ascii_lowercase) + \
-    ["{", "|", "}", "~", "DEL"]
+    ["{", "|", "}", "~", "DEL", "Ç", "ü", "é", "â", "ä", "à", "å", "ç", "ê", "ë", "è", "ï", "î", "ì", ""]
 
 def print_and_get_choices():
     print("2 standard_binary")
@@ -31,9 +31,10 @@ def generate_unicodes(base):
 
 def get_charset(base):
     ''' False denotes custom base was provided '''
+
     if base <= 10:
         return standard_base_10[:base]
-    elif base <= len(standard_base_10 + standard_ascii[:base - 10]):
+    elif base <= 87:
         return standard_base_10 + standard_ascii[:base - 10]
 
     return generate_unicodes(base)
@@ -79,11 +80,14 @@ if __name__ == '__main__':
     lets_convert.starting_base = print_and_get_choices()
     lets_convert.starting_base_chars = get_charset(lets_convert.starting_base)
     print("enter starting base value: ")
-    lets_convert.starting_base_value = split(str(input()))
+    if lets_convert.starting_base < 254:
+        lets_convert.starting_base_value = split(str(input()))
+    else:
+        lets_convert.starting_base_value = str(input())
 
     print("select ending base:")
     lets_convert.ending_base = print_and_get_choices()
-    if lets_convert.starting_base < 65:
+    if lets_convert.starting_base < 254:
         lets_convert.ending_base_chars = get_charset(lets_convert.ending_base)
     else:
         lets_convert.ending_base_chars = generate_unicodes(lets_convert.ending_base)

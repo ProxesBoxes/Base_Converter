@@ -13,7 +13,7 @@ class MyTestCase(unittest.TestCase):
         self.my_converter.starting_base = starting
         self.my_converter.starting_base_chars = Base_Converter.get_charset(self.my_converter.starting_base)
         self.my_converter.ending_base = ending
-        if self.my_converter.starting_base < 65:
+        if self.my_converter.starting_base < 254:
             self.my_converter.ending_base_chars = Base_Converter.get_charset(self.my_converter.ending_base)
         else:
             self.my_converter.ending_base_chars = Base_Converter.generate_unicodes(self.my_converter.ending_base)
@@ -163,6 +163,85 @@ class MyTestCase(unittest.TestCase):
         self.my_converter.starting_base_value = "U+0065"
         self.my_converter.convert()
         self.assertEqual("U+0001U+002C", "".join(self.my_converter.ending_base_value))
+
+    def test_2558_to_70_1(self):
+        self.set_bases(2558, 70)
+        self.my_converter.starting_base_value = "U+0066"
+        self.my_converter.convert()
+        self.assertEqual("U+0001U+0020", "".join(self.my_converter.ending_base_value))
+
+    def test_2558_to_70_2(self):
+        self.set_bases(2558, 70)
+        self.my_converter.starting_base_value = "U+006F"
+        self.my_converter.convert()
+        self.assertEqual("U+0001U+0029", "".join(self.my_converter.ending_base_value))
+
+    def test_2558_to_70_3(self):
+        self.set_bases(2558, 70)
+        self.my_converter.starting_base_value = "U+0072"
+        self.my_converter.convert()
+        self.assertEqual("U+0001U+002C", "".join(self.my_converter.ending_base_value))
+
+    def test_6_to_69_1(self):
+        self.set_bases(6, 69)
+        self.my_converter.starting_base_value = Base_Converter.split("155")
+        self.my_converter.convert()
+        self.assertEqual("12", "".join(self.my_converter.ending_base_value))
+
+    def test_6_to_69_2(self):
+        self.set_bases(6, 69)
+        self.my_converter.starting_base_value = Base_Converter.split("313")
+        self.my_converter.convert()
+        self.assertEqual("1g", "".join(self.my_converter.ending_base_value))
+
+    def test_6_to_69_3(self):
+        self.set_bases(6, 69)
+        self.my_converter.starting_base_value = Base_Converter.split("300")
+        self.my_converter.convert()
+        self.assertEqual("1^", "".join(self.my_converter.ending_base_value))
+
+    def test_6_to_69_4(self):
+        self.set_bases(6, 69)
+        self.my_converter.starting_base_value = Base_Converter.split("303")
+        self.my_converter.convert()
+        self.assertEqual("1a", "".join(self.my_converter.ending_base_value))
+
+    def test_112_to_1114111_1(self):
+        self.set_bases(112, 1114111)
+        self.my_converter.starting_base_value = "U+0074"
+        self.my_converter.convert()
+        self.assertEqual("U+0000U+0074", "".join(self.my_converter.ending_base_value))
+
+    def test_112_to_1114111_1(self):
+        self.set_bases(112, 1114111)
+        self.my_converter.starting_base_value = "U+0068"
+        self.my_converter.convert()
+        self.assertEqual("U+0000U+0068", "".join(self.my_converter.ending_base_value))
+
+    def test_112_to_1114111_1(self):
+        self.set_bases(112, 1114111)
+        self.my_converter.starting_base_value = "U+0065"
+        self.my_converter.convert()
+        self.assertEqual("U+0000U+0065", "".join(self.my_converter.ending_base_value))
+
+    def test_10_to_87_1(self):
+        self.set_bases(10, 87)
+        self.my_converter.starting_base_value = Base_Converter.split("121")
+        self.my_converter.convert()
+        self.assertEqual("1Y", "".join(self.my_converter.ending_base_value))
+
+    def test_10_to_87_2(self):
+        self.set_bases(10, 87)
+        self.my_converter.starting_base_value = Base_Converter.split("111")
+        self.my_converter.convert()
+        self.assertEqual("1O", "".join(self.my_converter.ending_base_value))
+
+    def test_10_to_87_3(self):
+        self.set_bases(10, 87)
+        self.my_converter.starting_base_value = Base_Converter.split("117")
+        self.my_converter.convert()
+        self.assertEqual("1U", "".join(self.my_converter.ending_base_value))
+
 
 
 if __name__ == '__main__':
