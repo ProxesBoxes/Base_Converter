@@ -60,7 +60,7 @@ class converter:
 
     def recuse_convert(self, value):
         cur_pos = math.floor(value / self.ending_base)
-        if cur_pos > self.ending_base:
+        if cur_pos >= self.ending_base:
             self.recuse_convert(cur_pos)
         else:
             self.ending_base_value += self.ending_base_chars[cur_pos]
