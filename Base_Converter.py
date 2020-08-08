@@ -2,19 +2,25 @@ import string
 import math
 
 # All bases start with
-standard_apha = list(string.ascii_lowercase) + list(string.ascii_uppercase)
+standard_apha = list(string.ascii_uppercase) + list(string.ascii_lowercase)
 standard_base_10 = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-standard_binary = ["0", "1"]
-standard_hex = standard_base_10 + list(string.ascii_uppercase)[:6]
-standard_base_63 = standard_base_10 + list(string.ascii_uppercase) + ["[", "\\", "]", "^", "_", "'"] + \
-                   list(string.ascii_lowercase)
+# standard_binary = standard_base_10[:1]
+# standard_base_8 = standard_base_10[:7]
+# standard_hex = standard_base_10 + list(string.ascii_uppercase)[:6]
+# standard_base_32 = standard_base_10 + list(string.ascii_uppercase)[:22]
+# standard_base_32_rfc = list(string.ascii_uppercase) + standard_base_10[2:7]
+# standard_base_63 = standard_base_10 + list(string.ascii_uppercase) + ["[", "\\", "]", "^", "_", "'"] + list(string.ascii_lowercase)
+
+
 
 
 def print_and_get_choices():
     print("2 standard_binary")
+    print("8 standard_base_8")
     print("10 standard_base_10")
     print("16 standard_hex")
-    print("4 standard_binary")
+    print("32 standard_base_32")
+    print("Or simply enter the base value you want and we'll try our best")
     print("enter # choice:")
     return int(input())
 
@@ -25,18 +31,14 @@ def split(word):
 
 def get_charset(base):
     ''' False denotes custom base was provided '''
-    if 2 == base:
-        return standard_binary
-    elif 10 == base:
-        return standard_base_10
-    elif 16 == base:
-        return standard_hex
-    elif "apha" == base:
-        return standard_apha
-    elif 63 == base:
-        return standard_base_63
-    return False
+    if base <= 10:
+        return standard_base_10[:base]
+    elif base <= 64:
+        return standard_base_10 + standard_apha[:base - 10]
+    elif base == 64:
+        return standard_base_10 + standard_apha + ["+", "/"]
 
+    return False
 
 class converter:
     starting_base = 0
