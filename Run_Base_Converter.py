@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import sys
 import Base_Converter
 import argparse
@@ -42,9 +44,9 @@ def print_and_get_choices():
 def populate_from_console(lets_convert):
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-sb", "--starting_base", help="The base in which the value to convert from is", type=int)
-    parser.add_argument("-sv", "--starting_value", help="The value to convert from")
-    parser.add_argument("-eb", "--ending_base", help="The base in which the value to convert to is", type=int)
+    parser.add_argument("-sb", "--starting_base", help="The base in which the value to convert from is", type=int, required=True)
+    parser.add_argument("-sv", "--starting_value", help="The value to convert from", required=True)
+    parser.add_argument("-eb", "--ending_base", help="The base in which the value to convert to is", type=int, required=True)
 
     args = parser.parse_args()
 
