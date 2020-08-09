@@ -1,29 +1,32 @@
 import sys
 import Base_Converter
-import getopt
+import argparse
+
 
 def main(argv):
-    print("base converter")
-    lets_convert = Base_Converter.BaseConverter()
-    print("select starting base:")
-    lets_convert.starting_base = print_and_get_choices()
-    lets_convert.starting_base_chars = Base_Converter.get_charset(lets_convert.starting_base)
-    print("enter starting base value: ")
-    if lets_convert.starting_base < 254:
-        lets_convert.starting_base_value = Base_Converter.split(str(input()))
+    lets_convert = None
+
+    # Check to see if args were passed in and if they were then use them
+    if len(argv) > 1:
+        lets_convert = populate_from_console(argv)
+        lets_convert.convert(lets_convert)
+
     else:
-        lets_convert.starting_base_value = str(input())
+        # If not print the interactive menu
+        print("base converter")
+        print("select starting base:")
+        starting_base = print_and_get_choices()
+        print("enter starting base value: ")
+        starting_base_value = str(input())
+        print("select ending base:")
+        ending_base = print_and_get_choices()
 
-    print("select ending base:")
-    lets_convert.ending_base = print_and_get_choices()
-    if lets_convert.starting_base < 254:
-        lets_convert.ending_base_chars = Base_Converter.get_charset(lets_convert.ending_base)
-    else:
-        lets_convert.ending_base_chars = Base_Converter.generate_unicodes(lets_convert.ending_base)
+        lets_convert = Base_Converter.BaseConverter(starting_base, starting_base_value, ending_base)
+        lets_convert.convert()
+        print("Ending Value: ")
 
-    lets_convert.convert()
+    print("".join(lets_convert.ending_base_value))
 
-    print("Ending Value: " + "".join(lets_convert.ending_base_value))
 
 def print_and_get_choices():
     print("2 standard_binary")
@@ -35,31 +38,17 @@ def print_and_get_choices():
     print("enter # choice:")
     return int(input())
 
-def populate_from_console(possible_args):
-    ''' Return false if there was nothing to populate from the console '''
-    inputfile = ''
-    outputfile = ''
-    try:
-        opts, args = getopt.getopt(possible_args, "hi:o:", ["ifile=", "ofile="])
-    except getopt.GetoptError:
-        print
-        'test.py -i <inputfile> -o <outputfile>'
-        sys.exit(2)
-    for opt, arg in opts:
-        if opt == '-h':
-            print
-            'test.py -i <inputfile> -o <outputfile>'
-            sys.exit()
-        elif opt in ("-i", "--ifile"):
-            inputfile = arg
-        elif opt in ("-o", "--ofile"):
-            outputfile = arg
-    print
-    'Input file is "', inputfile
-    print
-    'Output file is "', outputfile
 
-    return False
+def populate_from_console(lets_convert):
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-sb", "starting_base", help="The base in which the value to convert from is", type=int)
+    parser.add_argument("-sv", "starting_value", help="The value to convert from")
+    parser.add_argument("-eb", "ending_base", help="The base in which the value to convert to is", type=int)
+
+    args = parser.parse_args()
+
+    return Base_Converter.BaseConverter(args.starting_base, args.starting_value, args.ending_base)
 
 
 if __name__ == '__main__':

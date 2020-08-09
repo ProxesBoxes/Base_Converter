@@ -1,12 +1,14 @@
 import string
 import math
-import sys
+import re
 
 # All bases start with
 
 standard_base_10 = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 standard_ascii = list(string.ascii_uppercase) + ["[", "\\", "]", "^", "_", "`"] + list(string.ascii_lowercase) + \
     ["{", "|", "}", "~", "DEL", "Ç", "ü", "é", "â", "ä", "à", "å", "ç", "ê", "ë", "è", "ï", "î", "ì", ""]
+
+unicode_format = "U+{:04X}"
 
 
 def split(word):
@@ -16,7 +18,7 @@ def split(word):
 def generate_unicode_set(base):
     unicode_values = []
     for i in range(base):
-        unicode_values += ["U+" + "{:04X}".format(i)]
+        unicode_values += [unicode_format.format(i)]
     return unicode_values
 
 
@@ -38,6 +40,26 @@ class BaseConverter:
     ending_base = 0
     ending_base_chars = []
     ending_base_value = []
+
+    def __init__(self, input_base, input_value, output_base):
+
+        self.starting_base = input_base
+        self.starting_base_chars = get_charset(self.starting_base)
+
+        # Logic for breaking any input of base not using the "unicode" values by character otherwise break by
+        # "character set"
+        if self.starting_base < len(standard_ascii):
+            self.starting_base_value = split(input_value)
+        else:
+            # TODO: need to valid this works as expected
+            self.starting_base_value = re.split(unicode_format, input_value)
+
+        self.ending_base = output_base
+
+        if self.starting_base < len(standard_ascii):
+            self.ending_base_chars = get_charset(self.ending_base)
+        else:
+            self.ending_base_chars = generate_unicode_set(self.ending_base)
 
     def convert(self):
         # start with converting to base 10 value so we can maths
