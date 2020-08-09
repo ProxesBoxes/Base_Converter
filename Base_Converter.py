@@ -1,5 +1,6 @@
 import string
 import math
+import sys
 
 # All bases start with
 
@@ -7,22 +8,12 @@ standard_base_10 = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 standard_ascii = list(string.ascii_uppercase) + ["[", "\\", "]", "^", "_", "`"] + list(string.ascii_lowercase) + \
     ["{", "|", "}", "~", "DEL", "Ç", "ü", "é", "â", "ä", "à", "å", "ç", "ê", "ë", "è", "ï", "î", "ì", ""]
 
-def print_and_get_choices():
-    print("2 standard_binary")
-    print("8 standard_base_8")
-    print("10 standard_base_10")
-    print("16 standard_hex")
-    print("32 standard_base_32")
-    print("Or simply enter the base value you want and we'll try our best")
-    print("enter # choice:")
-    return int(input())
-
 
 def split(word):
     return [char for char in word]
 
 
-def generate_unicodes(base):
+def generate_unicode_set(base):
     unicode_values = []
     for i in range(base):
         unicode_values += ["U+" + "{:04X}".format(i)]
@@ -37,10 +28,10 @@ def get_charset(base):
     elif base <= 87:
         return standard_base_10 + standard_ascii[:base - 10]
 
-    return generate_unicodes(base)
+    return generate_unicode_set(base)
 
 
-class converter:
+class BaseConverter:
     starting_base = 0
     starting_base_chars = []
     starting_base_value = []
@@ -71,27 +62,3 @@ class converter:
             self.ending_base_value += self.ending_base_chars[cur_pos]
         mod_val = value % self.ending_base
         self.ending_base_value += self.ending_base_chars[math.floor(mod_val)]
-
-
-if __name__ == '__main__':
-    print("base converter")
-    lets_convert = converter()
-    print("select starting base:")
-    lets_convert.starting_base = print_and_get_choices()
-    lets_convert.starting_base_chars = get_charset(lets_convert.starting_base)
-    print("enter starting base value: ")
-    if lets_convert.starting_base < 254:
-        lets_convert.starting_base_value = split(str(input()))
-    else:
-        lets_convert.starting_base_value = str(input())
-
-    print("select ending base:")
-    lets_convert.ending_base = print_and_get_choices()
-    if lets_convert.starting_base < 254:
-        lets_convert.ending_base_chars = get_charset(lets_convert.ending_base)
-    else:
-        lets_convert.ending_base_chars = generate_unicodes(lets_convert.ending_base)
-
-    lets_convert.convert()
-
-    print("Ending Value: " + "".join(lets_convert.ending_base_value))
