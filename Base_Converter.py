@@ -9,6 +9,7 @@ standard_ascii = list(string.ascii_uppercase) + ["[", "\\", "]", "^", "_", "`"] 
     ["{", "|", "}", "~", "DEL", "Ç", "ü", "é", "â", "ä", "à", "å", "ç", "ê", "ë", "è", "ï", "î", "ì", ""]
 
 unicode_format = "U+{:04X}"
+unicode_format_width = 6
 
 
 def split(word):
@@ -34,20 +35,21 @@ def get_charset(base):
 
 
 class BaseConverter:
-    starting_base = 0
-    starting_base_chars = []
-    starting_base_value = []
-    ending_base = 0
-    ending_base_chars = []
-    ending_base_value = []
 
     def __init__(self, input_base, input_value, output_base):
+        self.starting_base = 0
+        self.starting_base_chars = []
+        self.starting_base_value = []
+        self.ending_base = 0
+        self.ending_base_chars = []
+        self.ending_base_value = []
 
         self.starting_base = input_base
         self.starting_base_chars = get_charset(self.starting_base)
 
         # Logic for breaking any input of base not using the "unicode" values by character otherwise break by
         # "character set"
+        input_value.strip()
         if self.starting_base < len(standard_ascii):
             self.starting_base_value = split(input_value)
         else:
@@ -84,3 +86,12 @@ class BaseConverter:
             self.ending_base_value += self.ending_base_chars[cur_pos]
         mod_val = value % self.ending_base
         self.ending_base_value += self.ending_base_chars[math.floor(mod_val)]
+
+    def return_output_for_viewing(self):
+        output = 0
+        output = "".join(self.ending_base_value)
+        if (self.starting_base >= len(standard_ascii)) or (self.ending_base >= len(standard_ascii)):
+            output = ' '.join([output[i:i+unicode_format_width] for i in range(0, len(output), unicode_format_width)])
+            "".join(self.ending_base_value)
+
+        return output

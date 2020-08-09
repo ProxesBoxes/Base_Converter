@@ -9,7 +9,7 @@ def main(argv):
     # Check to see if args were passed in and if they were then use them
     if len(argv) > 1:
         lets_convert = populate_from_console(argv)
-        lets_convert.convert(lets_convert)
+        lets_convert.convert()
 
     else:
         # If not print the interactive menu
@@ -25,7 +25,7 @@ def main(argv):
         lets_convert.convert()
         print("Ending Value: ")
 
-    print("".join(lets_convert.ending_base_value))
+    print(lets_convert.return_output_for_viewing())
 
 
 def print_and_get_choices():
@@ -42,9 +42,9 @@ def print_and_get_choices():
 def populate_from_console(lets_convert):
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-sb", "starting_base", help="The base in which the value to convert from is", type=int)
-    parser.add_argument("-sv", "starting_value", help="The value to convert from")
-    parser.add_argument("-eb", "ending_base", help="The base in which the value to convert to is", type=int)
+    parser.add_argument("-sb", "--starting_base", help="The base in which the value to convert from is", type=int)
+    parser.add_argument("-sv", "--starting_value", help="The value to convert from")
+    parser.add_argument("-eb", "--ending_base", help="The base in which the value to convert to is", type=int)
 
     args = parser.parse_args()
 
