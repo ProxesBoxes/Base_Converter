@@ -1,5 +1,6 @@
 import string
 import math
+import re
 
 # All bases start with
 
@@ -7,25 +8,18 @@ standard_base_10 = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 standard_ascii = list(string.ascii_uppercase) + ["[", "\\", "]", "^", "_", "`"] + list(string.ascii_lowercase) + \
     ["{", "|", "}", "~", "DEL", "Ç", "ü", "é", "â", "ä", "à", "å", "ç", "ê", "ë", "è", "ï", "î", "ì", ""]
 
-def print_and_get_choices():
-    print("2 standard_binary")
-    print("8 standard_base_8")
-    print("10 standard_base_10")
-    print("16 standard_hex")
-    print("32 standard_base_32")
-    print("Or simply enter the base value you want and we'll try our best")
-    print("enter # choice:")
-    return int(input())
+unicode_format = "U+{:04X}"
+unicode_format_width = 6
 
 
 def split(word):
     return [char for char in word]
 
 
-def generate_unicodes(base):
+def generate_unicode_set(base):
     unicode_values = []
     for i in range(base):
-        unicode_values += ["U+" + "{:04X}".format(i)]
+        unicode_values += [unicode_format.format(i)]
     return unicode_values
 
 
@@ -37,16 +31,37 @@ def get_charset(base):
     elif base <= 87:
         return standard_base_10 + standard_ascii[:base - 10]
 
-    return generate_unicodes(base)
+    return generate_unicode_set(base)
 
 
-class converter:
-    starting_base = 0
-    starting_base_chars = []
-    starting_base_value = []
-    ending_base = 0
-    ending_base_chars = []
-    ending_base_value = []
+class BaseConverter:
+
+    def __init__(self, input_base, input_value, output_base):
+        self.starting_base = 0
+        self.starting_base_chars = []
+        self.starting_base_value = []
+        self.ending_base = 0
+        self.ending_base_chars = []
+        self.ending_base_value = []
+
+        self.starting_base = input_base
+        self.starting_base_chars = get_charset(self.starting_base)
+
+        # Logic for breaking any input of base not using the "unicode" values by character otherwise break by
+        # "character set"
+        input_value.strip()
+        if self.starting_base < len(standard_ascii):
+            self.starting_base_value = split(input_value)
+        else:
+            # TODO: need to valid this works as expected
+            self.starting_base_value = re.split(unicode_format, input_value)
+
+        self.ending_base = output_base
+
+        if self.starting_base < len(standard_ascii):
+            self.ending_base_chars = get_charset(self.ending_base)
+        else:
+            self.ending_base_chars = generate_unicode_set(self.ending_base)
 
     def convert(self):
         # start with converting to base 10 value so we can maths
@@ -72,26 +87,11 @@ class converter:
         mod_val = value % self.ending_base
         self.ending_base_value += self.ending_base_chars[math.floor(mod_val)]
 
+    def return_output_for_viewing(self):
+        output = 0
+        output = "".join(self.ending_base_value)
+        if (self.starting_base >= len(standard_ascii)) or (self.ending_base >= len(standard_ascii)):
+            output = ' '.join([output[i:i+unicode_format_width] for i in range(0, len(output), unicode_format_width)])
+            "".join(self.ending_base_value)
 
-if __name__ == '__main__':
-    print("base converter")
-    lets_convert = converter()
-    print("select starting base:")
-    lets_convert.starting_base = print_and_get_choices()
-    lets_convert.starting_base_chars = get_charset(lets_convert.starting_base)
-    print("enter starting base value: ")
-    if lets_convert.starting_base < 254:
-        lets_convert.starting_base_value = split(str(input()))
-    else:
-        lets_convert.starting_base_value = str(input())
-
-    print("select ending base:")
-    lets_convert.ending_base = print_and_get_choices()
-    if lets_convert.starting_base < 254:
-        lets_convert.ending_base_chars = get_charset(lets_convert.ending_base)
-    else:
-        lets_convert.ending_base_chars = generate_unicodes(lets_convert.ending_base)
-
-    lets_convert.convert()
-
-    print("Ending Value: " + "".join(lets_convert.ending_base_value))
+        return output
