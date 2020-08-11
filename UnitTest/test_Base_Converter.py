@@ -7,17 +7,12 @@ class TestBaseConverter(unittest.TestCase):
     def test_2_to_16_1(self):
         base_convert = Base_Converter.BaseConverter(2, "1010100", 16)
         base_convert.convert()
-        foo = base_convert.return_output_for_viewing()
         self.assertEqual("54", base_convert.return_output_for_viewing())
-        base_convert = None
 
     def test_2_to_16_2(self):
         base_convert = Base_Converter.BaseConverter(2, "1101000", 16)
         base_convert.convert()
-        foo = base_convert.return_output_for_viewing()
         self.assertEqual("68", base_convert.return_output_for_viewing())
-        base_convert.ending_base_value = ""
-        base_convert = None
 
     def test_2_to_16_3(self):
         base_convert = Base_Converter.BaseConverter(2, "1100101", 16)

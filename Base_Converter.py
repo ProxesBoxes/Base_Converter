@@ -53,14 +53,6 @@ def generate_standard_base_set(base):
     return standard_base_set + generate_ascii_set(base - 10, 65)
 
 
-def set_base_chars(base, set_choice, chosen_charset):
-    # if a non-custom set choice set it otherwise hope it's set
-
-
-
-    return chosen_charset
-
-
 class BaseConverter:
 
     def __init__(self, input_base, input_value, output_base, input_set=standard_charset, output_set=None):
