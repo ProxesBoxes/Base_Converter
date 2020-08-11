@@ -17,6 +17,10 @@ ascii_charset = "ascii"
 unicode_charset = "unicode"
 charset = [standard_charset, unicode_charset, ascii_charset]
 
+base_exceeds_standard = Exception("Base exceeds standard ascii set please use a custom defined set")
+base_exceeds_normal_ascii = Exception("Base exceeds " + str(normal_ascii_max_size) +
+                                      " thus \"normal_ascii_set\" can not be used.")
+
 
 def split(word):
     return [char for char in word]
@@ -31,13 +35,13 @@ def generate_unicode_set(base):
 
 def generate_normal_ascii_set(base):
     if abs(base) > normal_ascii_max_size:
-        raise Exception("Base exceeds " + str(normal_ascii_max_size) + " thus \"normal_ascii_set\" can not be used.")
+        raise base_exceeds_normal_ascii
     return generate_ascii_set(base)
 
 
 def generate_ascii_set(base, offset=0):
     if (abs(base) + offset) > normal_ascii_max_size:
-        raise Exception("Base exceeds standard ascii set please use a custom defined set")
+        raise base_exceeds_standard
 
     asci_values = []
     for i in range(base):
@@ -86,11 +90,9 @@ class BaseConverter:
 
         self.starting_base_value.strip()
 
-        if input_set == standard_charset:
-            self.starting_base_value = split(input_value)
-        elif input_set == unicode_charset:
-            self.starting_base_value = re.split(unicode_format, input_value)
-        elif input_set == ascii_charset:
+        if input_set == unicode_charset:
+            self.starting_base_value = input_value.split()
+        else:
             self.starting_base_value = split(input_value)
 
     def convert(self):
