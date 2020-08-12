@@ -1,5 +1,7 @@
 import unittest
+
 import Base_Converter
+import Charsets
 
 
 class TestBaseConverter(unittest.TestCase):
@@ -7,17 +9,12 @@ class TestBaseConverter(unittest.TestCase):
     def test_2_to_16_1(self):
         base_convert = Base_Converter.BaseConverter(2, "1010100", 16)
         base_convert.convert()
-        foo = base_convert.return_output_for_viewing()
         self.assertEqual("54", base_convert.return_output_for_viewing())
-        base_convert = None
 
     def test_2_to_16_2(self):
         base_convert = Base_Converter.BaseConverter(2, "1101000", 16)
         base_convert.convert()
-        foo = base_convert.return_output_for_viewing()
         self.assertEqual("68", base_convert.return_output_for_viewing())
-        base_convert.ending_base_value = ""
-        base_convert = None
 
     def test_2_to_16_3(self):
         base_convert = Base_Converter.BaseConverter(2, "1100101", 16)
@@ -120,32 +117,38 @@ class TestBaseConverter(unittest.TestCase):
         self.assertEqual("1\\", base_convert.return_output_for_viewing())
 
     def test_907_to_57_1(self):
-        base_convert = Base_Converter.BaseConverter(907, "U+0061", 57)
+        base_convert = Base_Converter.BaseConverter(907, "U+0061", 57, Charsets.unicode_charset,
+                                                    Charsets.unicode_charset)
         base_convert.convert()
         self.assertEqual("U+0001 U+0028", base_convert.return_output_for_viewing())
 
     def test_907_to_57_2(self):
-        base_convert = Base_Converter.BaseConverter(907, "U+0072", 57)
+        base_convert = Base_Converter.BaseConverter(907, "U+0072", 57, Charsets.unicode_charset,
+                                                    Charsets.unicode_charset)
         base_convert.convert()
         self.assertEqual("U+0002 U+0000", base_convert.return_output_for_viewing())
 
     def test_907_to_57_3(self):
-        base_convert = Base_Converter.BaseConverter(907, "U+0065", 57)
+        base_convert = Base_Converter.BaseConverter(907, "U+0065", 57, Charsets.unicode_charset,
+                                                    Charsets.unicode_charset)
         base_convert.convert()
         self.assertEqual("U+0001 U+002C", base_convert.return_output_for_viewing())
 
     def test_2558_to_70_1(self):
-        base_convert = Base_Converter.BaseConverter(2558, "U+0066", 70)
+        base_convert = Base_Converter.BaseConverter(2558, "U+0066", 70, Charsets.unicode_charset,
+                                                    Charsets.unicode_charset)
         base_convert.convert()
         self.assertEqual("U+0001 U+0020", base_convert.return_output_for_viewing())
 
     def test_2558_to_70_2(self):
-        base_convert = Base_Converter.BaseConverter(2558, "U+006F", 70)
+        base_convert = Base_Converter.BaseConverter(2558, "U+006F", 70, Charsets.unicode_charset,
+                                                    Charsets.unicode_charset)
         base_convert.convert()
         self.assertEqual("U+0001 U+0029", base_convert.return_output_for_viewing())
 
     def test_2558_to_70_3(self):
-        base_convert = Base_Converter.BaseConverter(2558, "U+0072", 70)
+        base_convert = Base_Converter.BaseConverter(2558, "U+0072", 70, Charsets.unicode_charset,
+                                                    Charsets.unicode_charset)
         base_convert.convert()
         self.assertEqual("U+0001 U+002C", base_convert.return_output_for_viewing())
 
@@ -169,19 +172,21 @@ class TestBaseConverter(unittest.TestCase):
         base_convert.convert()
         self.assertEqual("1a", base_convert.return_output_for_viewing())
 
-
     def test_112_to_1114111_1(self):
-        base_convert = Base_Converter.BaseConverter(118, "U+0074", 1114111)
+        base_convert = Base_Converter.BaseConverter(118, "U+0074", 1114111, Charsets.unicode_charset,
+                                                    Charsets.unicode_charset)
         base_convert.convert()
         self.assertEqual("U+0000 U+0074", base_convert.return_output_for_viewing())
 
     def test_112_to_1114111_2(self):
-        base_convert = Base_Converter.BaseConverter(112, "U+0068", 1114111)
+        base_convert = Base_Converter.BaseConverter(112, "U+0068", 1114111, Charsets.unicode_charset,
+                                                    Charsets.unicode_charset)
         base_convert.convert()
         self.assertEqual("U+0000 U+0068", base_convert.return_output_for_viewing())
 
     def test_112_to_1114111_3(self):
-        base_convert = Base_Converter.BaseConverter(112, "U+0065", 1114111)
+        base_convert = Base_Converter.BaseConverter(112, "U+0065", 1114111, Charsets.unicode_charset,
+                                                    Charsets.unicode_charset)
         base_convert.convert()
         self.assertEqual("U+0000 U+0065", base_convert.return_output_for_viewing())
 
