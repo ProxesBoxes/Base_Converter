@@ -19,9 +19,9 @@ bases were added.
 * Python3
 
 ## How to run
-There are two ways to run this tool, both through the commandline.<br>
+There are two ways to run this tool, both through the command line.<br>
 
-Both potions require you to download the tool.<br>
+Both options require you to download the tool.<br>
 
 This can be done via:
 ```
