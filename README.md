@@ -9,6 +9,7 @@ character sets to represent the values in these bases thus the functionality for
 bases were added.
 
 ##Current limitations
+* Only single input values at a time
 * Only non-negative bases supported
 * Only pre-defined character sets supported
 
@@ -31,7 +32,7 @@ and at a minimum provide the required arguments.
 
 ####Options
 #####Required
-   ```
+ ```
    -sb, --starting_base
         The base in which the value to convert from is
 
@@ -44,13 +45,18 @@ and at a minimum provide the required arguments.
 #####Optional
 ```
    -sc, --starting_character_set
-        The character set to us for the input, defaults to standard_charset
+        The character set to us for the input, defaults to standard charset
 
    -ec, --ending_character_set 
-        The character set to us for the output, defaults to standard_charset)
+        The character set to us for the output, defaults to standard charset
 ```
 
-##Predefined Character sets
+##Predefined Character Sets
+| Character Set Name  | Characters in set |
+| ------------- | ------------- |
+| standard  | 0, 1, 2, 3, ..., 7, 8, 9, A, B, C, ..., X, Y, Z, :, ;, <, =, >, ?, @, a, b, c, ...  |
+| unicode | U+0000, U+0001, U+0002, U+0003, ..., U+0009, U+00A, U+000B, ..., U+000F, U+0010, U+0011, ...  |
+| ascii  | 'NUL', 'SOH', 'STX', 'ETX', ..., '!', '"', '#', ..., 'A', 'B', ... |
 
 ##Planned Future functionality
 * Support for negative bases
