@@ -66,7 +66,7 @@ and at a minimum provide the required arguments.
 ### Example output
 #### Example 1
 Using the cli to convert 16 in base 10, standard character set, to base 8, standard character set
-```shell script
+```
 base converter
 select starting base:
   2 standard_binary
@@ -104,21 +104,21 @@ Ending Value:
 
 #### Example 2
 Using the non-interactive mode to covert 65 in base 10, standard character set, to base 16, standard character set
-```shell script
+```
 ./Run_Base_Converter.py -sb 10 -sv 65 -eb 16
 41
 ```
 
 #### Example 3
 Using the non-interactive mode to covert 65 in base 10, standard character set, to base 256, standard ascii set
-```shell script
+```
 ./Run_Base_Converter.py -sb 10 -sv 65 -eb 256 -ec ascii
 A
 ```
 
 #### Example 4
 Using the non-interactive mode to covert 65 in base 10, standard character set, to base 16, standard unicode set
-```shell script
+```
 ./Run_Base_Converter.py -sb 10 -sv 65 -eb 800 -ec unicode
 U+0000 U+0041
 ```
