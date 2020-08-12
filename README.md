@@ -19,12 +19,23 @@ bases were added.
 * Python3
 
 ## How to run
-There are two ways to run this tool, both through the commandline.
-### Interactive Mode
-To run the interactive mode simply execute the `Run_Base_Converter.py` this can be done by navigating to the file 
-location and entering `./Run_Base_converter.py`.
+There are two ways to run this tool, both through the commandline.<br>
 
-Follow the instructions provided via the CLI
+Both potions require you to download the tool.<br>
+
+This can be done via:
+```
+git clone git@github.com:ProxesBoxes/Base_Converter.git
+```
+Or clicking the `Code->Download Zip` option on the top right. If the zip has been downloaded then extract the content 
+before continuing.
+<br><br>
+Running the tool can be done via command line by navigating to the file location and entering `./Run_Base_converter.py` 
+or `python3 Run_Base_converter.py`.
+
+### Interactive Mode
+To run the interactive mode simply execute the `Run_Base_Converter.py` with no parameter and follow the instructions 
+provided via the CLI.
 
 ### Non-interactive Mode
 To run the program through the terminal in an no-interactive mode / call by other scripts simply execute the program 
@@ -51,6 +62,65 @@ and at a minimum provide the required arguments.
 
    -ec, --ending_character_set 
         The character set to us for the output, defaults to standard charset
+```
+### Example output
+#### Example 1
+Using the cli to convert 16 in base 10, standard character set, to base 8, standard character set
+```shell script
+base converter
+select starting base:
+  2 standard_binary
+  8 standard_base_8
+  10 standard_base_10
+  16 standard_hex
+  32 standard_base_32
+  Or simply enter the base value you want and we'll try our best
+  enter # choice:
+10
+enter starting base character set:
+  1 - standard (default)
+  2 - unicode
+  3 - ascii
+1
+enter starting base value: 
+16
+select ending base:
+  2 standard_binary
+  8 standard_base_8
+  10 standard_base_10
+  16 standard_hex
+  32 standard_base_32
+  Or simply enter the base value you want and we'll try our best
+  enter # choice:
+8 
+enter ending base character set: 
+  1 - standard (default)
+  2 - unicode
+  3 - ascii
+1
+Ending Value: 
+20
+```
+
+#### Example 2
+Using the non-interactive mode to covert 65 in base 10, standard character set, to base 16, standard character set
+```shell script
+./Run_Base_Converter.py -sb 10 -sv 65 -eb 16
+41
+```
+
+#### Example 3
+Using the non-interactive mode to covert 65 in base 10, standard character set, to base 256, standard ascii set
+```shell script
+./Run_Base_Converter.py -sb 10 -sv 65 -eb 256 -ec ascii
+A
+```
+
+#### Example 4
+Using the non-interactive mode to covert 65 in base 10, standard character set, to base 16, standard unicode set
+```shell script
+./Run_Base_Converter.py -sb 10 -sv 65 -eb 800 -ec unicode
+U+0000 U+0041
 ```
 
 ## Predefined Character Sets
