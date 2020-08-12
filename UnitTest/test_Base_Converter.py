@@ -1,6 +1,7 @@
 import unittest
-import Charsets
+
 import Base_Converter
+import Charsets
 
 
 class TestBaseConverter(unittest.TestCase):

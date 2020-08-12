@@ -1,8 +1,8 @@
 import string
 import unittest
 
-import Globals
 import Charsets
+import Globals
 from Base_Converter_Exceptions import BaseConverterException
 
 

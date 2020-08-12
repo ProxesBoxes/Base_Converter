@@ -1,6 +1,7 @@
 import math
-import Globals
+
 import Charsets
+import Globals
 from Base_Converter_Exceptions import BaseConverterException
 
 

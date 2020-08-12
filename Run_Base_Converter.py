@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 
-import sys
-import Base_Converter
 import argparse
+import sys
+
+import Base_Converter
+import Charsets
 
 
 def main(argv):
-    lets_convert = None
 
     # Check to see if args were passed in and if they were then use them
     if len(argv) > 1:
@@ -52,12 +53,12 @@ def print_and_get_character_set():
     print("  3 - ascii")
     charset = str(input())
 
-    if charset == "" or charset == "1" or charset.lower() == Base_Converter.standard_charset:
-        return Base_Converter.standard_charset
-    if charset == "2" or charset.lower() == Base_Converter.unicode_charset:
-        return Base_Converter.unicode_charset
-    if charset == "3" or charset.lower() == Base_Converter.ascii_charset:
-        return Base_Converter.ascii_charset
+    if charset == "" or charset == "1" or charset.lower() == Charsets.standard_charset:
+        return Charsets.standard_charset
+    if charset == "2" or charset.lower() == Charsets.unicode_charset:
+        return Charsets.unicode_charset
+    if charset == "3" or charset.lower() == Charsets.ascii_charset:
+        return Charsets.ascii_charset
 
     return charset
 
@@ -69,11 +70,11 @@ def populate_from_console(lets_convert):
                         required=True)
     parser.add_argument("-sv", "--starting_value", help="The value to convert from", required=True)
     parser.add_argument("-sc", "--starting_character_set", help="The character set to us for the input",
-                        required=False, default=Base_Converter.standard_charset)
+                        required=False, default=Charsets.standard_charset)
     parser.add_argument("-eb", "--ending_base", help="The base in which the value to convert to is", type=int,
                         required=True)
     parser.add_argument("-ec", "--ending_character_set", help="The character set to us for the output",
-                        required=False, default=Base_Converter.standard_charset)
+                        required=False, default=Charsets.standard_charset)
 
     args = parser.parse_args()
 
