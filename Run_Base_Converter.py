@@ -67,15 +67,14 @@ def populate_from_console(lets_convert):
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-sb", "--starting_base", help="The base in which the value to convert from is", type=int,
-                        required=True)
-    parser.add_argument("-sv", "--starting_value", help="The value to convert from", required=True)
+                        required=False, default=10)
     parser.add_argument("-sc", "--starting_character_set", help="The character set to us for the input",
                         required=False, default=Charsets.standard_charset)
-    parser.add_argument("-eb", "--ending_base", help="The base in which the value to convert to is", type=int,
-                        required=True)
     parser.add_argument("-ec", "--ending_character_set", help="The character set to us for the output",
                         required=False, default=Charsets.standard_charset)
 
+    parser.add_argument("starting_value", help="The value to convert from")
+    parser.add_argument("ending_base", help="The base in which the value to convert to", type=int)
     args = parser.parse_args()
 
     return Base_Converter.BaseConverter(args.starting_base, args.starting_value, args.ending_base,

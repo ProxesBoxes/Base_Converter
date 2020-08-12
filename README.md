@@ -41,22 +41,22 @@ provided via the CLI.
 To run the program through the terminal in an no-interactive mode / call by other scripts simply execute the program 
 and at a minimum provide the required arguments.
 #### Synopsis
-`./Run_Base [Options...]`
+`./Run_Base [Options...] starting_value ending_base`
 
 #### Options
 ##### Required
  ```
-   -sb, --starting_base
-        The base in which the value to convert from is
-
-   -sv, --starting_value
+   starting_value
         The value to convert from
 
-   -eb, --ending_base
-        The base in which the value to convert to is
+   ending_base
+        The base in which the value to convert to
 ```
 ##### Optional
 ```
+   -sb, --starting_base
+        The base in which the value to convert from, default to base 10
+
    -sc, --starting_character_set
         The character set to us for the input, defaults to standard charset
 
@@ -105,22 +105,29 @@ Ending Value:
 #### Example 2
 Using the non-interactive mode to covert 65 in base 10, standard character set, to base 16, standard character set
 ```
-./Run_Base_Converter.py -sb 10 -sv 65 -eb 16
+./Run_Base_Converter.py 65 16
 41
 ```
 
 #### Example 3
 Using the non-interactive mode to covert 65 in base 10, standard character set, to base 256, standard ascii set
 ```
-./Run_Base_Converter.py -sb 10 -sv 65 -eb 256 -ec ascii
+./Run_Base_Converter.py -ec ascii 65 256
 A
 ```
 
 #### Example 4
 Using the non-interactive mode to covert 65 in base 10, standard character set, to base 16, standard unicode set
 ```
-./Run_Base_Converter.py -sb 10 -sv 65 -eb 800 -ec unicode
+./Run_Base_Converter.py -ec unicode 65 800
 U+0000 U+0041
+```
+
+#### Example 5
+Using the non-interactive mode to covert U+0041 in base 1337, unicode character set, to base 256, standard ascii set
+```
+./Run_Base_Converter.py -sb 1337 -sc unicode -ec ascii  U+0041 256
+A
 ```
 
 ## Predefined Character Sets
