@@ -10,7 +10,7 @@ import Charsets
 def main(argv):
 
     # Check to see if args were passed in and if they were then use them
-    if len(argv) > 1:
+    if len(argv) > 0:
         lets_convert = populate_from_console(argv)
         lets_convert.convert()
 
