@@ -1,65 +1,12 @@
-import string
 import math
-import re
-
-# All bases start with
-
-normal_ascii_max_size = 256
-
-standard_base_10 = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-
-unicode_start = "U+"
-unicode_format = unicode_start + "{:04X}"
-unicode_format_width = 6
-
-standard_charset = "standard"
-ascii_charset = "ascii"
-unicode_charset = "unicode"
-charset = [standard_charset, unicode_charset, ascii_charset]
-
-base_exceeds_standard = Exception("Base exceeds standard ascii set please use a custom defined set")
-base_exceeds_normal_ascii = Exception("Base exceeds " + str(normal_ascii_max_size) +
-                                      " thus \"normal_ascii_set\" can not be used.")
-
-
-def split(word):
-    return [char for char in word]
-
-
-def generate_unicode_set(base):
-    unicode_values = []
-    for i in range(base):
-        unicode_values += [unicode_format.format(i)]
-    return unicode_values
-
-
-def generate_normal_ascii_set(base):
-    if abs(base) > normal_ascii_max_size:
-        raise base_exceeds_normal_ascii
-    return generate_ascii_set(base)
-
-
-def generate_ascii_set(base, offset=0):
-    if (abs(base) + offset) > normal_ascii_max_size:
-        raise base_exceeds_standard
-
-    asci_values = []
-    for i in range(base):
-        asci_values += [chr(i + offset)]
-    return asci_values
-
-
-def generate_standard_base_set(base):
-    standard_base_set = standard_base_10
-    if base <= 10:
-        return standard_base_set[:base]
-
-    return standard_base_set + generate_ascii_set(base - 10, 65)
+import Globals
+import Charsets
+from Base_Converter_Exceptions import BaseConverterException
 
 
 class BaseConverter:
 
-    def __init__(self, input_base, input_value, output_base, input_set=standard_charset, output_set=None):
+    def __init__(self, input_base, input_value, output_base, input_set=Charsets.standard_charset, output_set=None):
         if output_set is None:
             output_set = input_set
 
@@ -67,49 +14,53 @@ class BaseConverter:
         self.starting_base_chars = input_set
         self.starting_base_value = input_value
         self.starting_base_charset = input_set
-
-        if self.starting_base_charset == standard_charset:
-            self.starting_base_chars = generate_standard_base_set(self.starting_base)
-        elif self.starting_base_charset == unicode_charset:
-            self.starting_base_chars = generate_unicode_set(self.starting_base)
-        elif self.starting_base_charset == ascii_charset:
-            self.starting_base_chars = generate_ascii_set(self.starting_base)
-
         self.ending_base = output_base
         self.ending_base_chars = output_set
         self.ending_base_charset = output_set
-
-        if self.ending_base_charset == standard_charset:
-            self.ending_base_chars = generate_standard_base_set(self.ending_base)
-        elif self.ending_base_charset == unicode_charset:
-            self.ending_base_chars = generate_unicode_set(self.ending_base)
-        elif self.ending_base_charset == ascii_charset:
-            self.ending_base_chars = generate_ascii_set(self.ending_base)
-
         self.ending_base_value = []
 
-        self.starting_base_value.strip()
-
-        if input_set == unicode_charset:
-            self.starting_base_value = input_value.split()
-        else:
-            self.starting_base_value = split(input_value)
-
     def convert(self):
+        self.validate()
+        self.populate_chars()
         # start with converting to base 10 value so we can maths
+        self.recuse_convert(self.get_base10_value())
+
+    def validate(self):
+        # TODO: use abs when validating for negative bases
+        if self.starting_base < 2:
+            raise BaseConverterException.InvalidBase("starting")
+
+        if self.ending_base < 2:
+            raise BaseConverterException.InvalidBase("ending")
+
+    def populate_chars(self):
+        self.starting_base_chars = Charsets.get_chars(self.starting_base, self.starting_base_charset)
+        self.ending_base_chars = Charsets.get_chars(self.ending_base, self.ending_base_charset)
+
+    def get_base10_value(self):
+
+        # quick logic to exit out if starting base is 10 and is the standard charset
+        if self.starting_base == 10 and self.starting_base_charset == Charsets.standard_charset:
+            return int(self.starting_base_value)
+
+        starting_value = Globals.split(self.starting_base_value)
+        if self.starting_base_charset == Charsets.unicode_charset:
+            starting_value = self.starting_base_value.split()
+
+        starting_value.reverse()
+
         position = 0
         base_10_value = 0
-
-        self.starting_base_value.reverse()
-
-        for char in self.starting_base_value:
+        for char in starting_value:
             i = self.starting_base_chars.index(char)
             base_10_value += i * (math.pow(self.starting_base, position))
             position += 1
 
-        self.recuse_convert(base_10_value)
+        return base_10_value
 
     def recuse_convert(self, value):
+        # Assumes that the value provided is in base 10
+
         cur_pos = math.floor(value / self.ending_base)
         if cur_pos >= self.ending_base:
             self.recuse_convert(cur_pos)
@@ -121,8 +72,10 @@ class BaseConverter:
     def return_output_for_viewing(self):
         output = "".join(self.ending_base_value)
 
-        if self.ending_base_charset == unicode_charset:
-            output = ' '.join([output[i:i + unicode_format_width] for i in range(0, len(output), unicode_format_width)])
+        if self.ending_base_charset == Charsets.unicode_charset:
+            output = ' '.join([output[i:i + Charsets.unicode_format_width] for i in range(0, len(output),
+                                                                                          Charsets.unicode_format_width)
+                               ])
             "".join(self.ending_base_value)
 
         return output
