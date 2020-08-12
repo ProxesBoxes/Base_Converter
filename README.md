@@ -50,7 +50,7 @@ and at a minimum provide the required arguments.
         The value to convert from
 
    ending_base
-        The base in which the value to convert to
+        The base in which the value is to be converted to
 ```
 ##### Optional
 ```
