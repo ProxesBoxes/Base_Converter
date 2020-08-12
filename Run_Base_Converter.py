@@ -10,7 +10,7 @@ import Charsets
 def main(argv):
 
     # Check to see if args were passed in and if they were then use them
-    if len(argv) > 1:
+    if len(argv) > 0:
         lets_convert = populate_from_console(argv)
         lets_convert.convert()
 
@@ -65,17 +65,22 @@ def print_and_get_character_set():
 
 def populate_from_console(lets_convert):
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-sb", "--starting_base", help="The base in which the value to convert from is", type=int,
-                        required=True)
-    parser.add_argument("-sv", "--starting_value", help="The value to convert from", required=True)
-    parser.add_argument("-sc", "--starting_character_set", help="The character set to us for the input",
-                        required=False, default=Charsets.standard_charset)
-    parser.add_argument("-eb", "--ending_base", help="The base in which the value to convert to is", type=int,
-                        required=True)
-    parser.add_argument("-ec", "--ending_character_set", help="The character set to us for the output",
-                        required=False, default=Charsets.standard_charset)
+    parser = argparse.ArgumentParser(prog="Run_Base_Converter",
+                                     description="A base converter tool which supports different character sets. The "
+                                                 "different character sets supported currently are: " +
+                                                 Charsets.predefined_charsets.__str__()[1:-1] + ".",
+                                     epilog="Built for The Information Technology Syndicate")
 
+    parser.add_argument("-sb", "--starting_base", help="The base in which the value to convert from, default is base 10"
+                        , type=int, required=False, default=10)
+    parser.add_argument("-sc", "--starting_character_set", help="The character set to us for the input, default set is "
+                        "'" + Charsets.standard_charset + "' character set", required=False,
+                        default=Charsets.standard_charset)
+    parser.add_argument("-ec", "--ending_character_set", help="The character set to us for the output, default set is "
+                        "'" + Charsets.standard_charset + "' character set", required=False,
+                        default=Charsets.standard_charset)
+    parser.add_argument("starting_value", help="The value to convert from", type=str)
+    parser.add_argument("ending_base", help="The base in which the value is to be converted to", type=int)
     args = parser.parse_args()
 
     return Base_Converter.BaseConverter(args.starting_base, args.starting_value, args.ending_base,
