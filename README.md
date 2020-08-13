@@ -41,7 +41,11 @@ provided via the CLI.
 To run the program through the terminal in an no-interactive mode / call by other scripts simply execute the program 
 and at a minimum provide the required arguments.
 #### Synopsis
-`./Run_Base [Options...] starting_value ending_base`
+```
+Run_Base_Converter.py [-h] [-sb STARTING_BASE] [-sc STARTING_CHARACTER_SET]
+                          [-ec ENDING_CHARACTER_SET]
+                          starting_value ending_base
+```
 
 #### Options
 ##### Required
@@ -54,6 +58,9 @@ and at a minimum provide the required arguments.
 ```
 ##### Optional
 ```
+    -h, --help
+        show the message and exit
+
    -sb, --starting_base
         The base in which the value to convert from, default to base 10
 
@@ -62,45 +69,37 @@ and at a minimum provide the required arguments.
         off of the starting value
 
    -ec, --ending_character_set 
-        The character set to us for the output, defaults to standard charset
+        The character set to us for the output, defaults to the same character set as the starting character set
 ```
 ### Example output
 #### Example 1
 Using the cli to convert 16 in base 10, standard character set, to base 8, standard character set
 ```
-base converter
-select starting base:
-  2 standard_binary
-  8 standard_base_8
-  10 standard_base_10
-  16 standard_hex
-  32 standard_base_32
-  Or simply enter the base value you want and we'll try our best
-  enter # choice:
-10
-enter starting base character set:
-  1 - standard (default)
+--------------------------------------------------
+|                 Base Converter                 |
+|                                                |
+| Built for The Information Technology Syndicate |
+--------------------------------------------------
+
+Enter the starting base (default base 10): 10
+
+Enter starting base value: 16
+
+Select the starting base character set
+  1 - standard
   2 - unicode
   3 - ascii
-1
-enter starting base value: 
-16
-select ending base:
-  2 standard_binary
-  8 standard_base_8
-  10 standard_base_10
-  16 standard_hex
-  32 standard_base_32
-  Or simply enter the base value you want and we'll try our best
-  enter # choice:
-8 
-enter ending base character set: 
-  1 - standard (default)
+  Enter character set # (default 1): 1
+
+Enter the ending base (default base 10): 8
+
+Select the ending base character set
+  1 - standard
   2 - unicode
   3 - ascii
-1
-Ending Value: 
-20
+  Enter character set # (default 1): 1
+
+Converted Value: 20
 ```
 
 #### Example 2
@@ -131,6 +130,14 @@ Using the non-interactive mode to covert U+0041 in base 1337, unicode character 
 A
 ```
 
+#### Example 6
+Using the non-interactive mode to covert U+0041 in base 1337, utilizing the autodetection of the unicode character set, 
+to base 256, standard ascii set
+```
+./Run_Base_Converter.py -sb 1337 -ec ascii U+0041 256
+A
+```
+
 ## Predefined Character Sets
 | Character Set Name  | Characters in set |
 | ------------- | ------------- |
@@ -138,7 +145,6 @@ A
 | unicode | U+0000, U+0001, U+0002, U+0003, ..., U+0009, U+00A, U+000B, ..., U+000F, U+0010, U+0011, ...  |
 | ascii  | 'NUL', 'SOH', 'STX', 'ETX', ..., '!', '"', '#', ..., 'A', 'B', ... |
 
-## Planned Future functionality
-* Support for negative bases
-* Support for multiple input and output values
-* A better CLI interface
+####ASCII Warning
+Non-printable characters such as NUL, SOH, STX, etc may not be visible. If this is an issue submit a new issue and this 
+will attempted to be address as soon as possible (likely just printing hex codes for non-printable characters).

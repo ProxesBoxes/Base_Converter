@@ -13,26 +13,35 @@ def main(argv):
     if len(argv) > 0:
         lets_convert = populate_from_console()
         lets_convert.convert()
+        print(lets_convert.return_output_for_viewing())
 
     else:
         # If not print the interactive menu
-        print("Base Converter")
+        print()
+        print("--------------------------------------------------")
+        print("|                 Base Converter                 |")
+        print("|                                                |")
+        print("| Built for The Information Technology Syndicate |")
+        print("--------------------------------------------------")
         print()
         starting_base = int(input("Enter the starting base (default base 10): ") or 10)
+        print()
         starting_base_value = str(input("Enter starting base value: ") or "0")
+        print()
         starting_character_set = Charsets.detect_charset(starting_base_value)
         print("Select the starting base character set")
         starting_character_set = print_and_get_character_set(starting_character_set)
+        print()
         ending_base = int(input("Enter the ending base (default base 10): ") or 10)
+        print()
         print("Select the ending base character set")
         ending_character_set = print_and_get_character_set(starting_character_set)
+        print()
 
         lets_convert = Base_Converter.BaseConverter(starting_base, starting_base_value, ending_base,
                                                     starting_character_set, ending_character_set)
         lets_convert.convert()
-        print("Ending Value: ")
-
-    print(lets_convert.return_output_for_viewing())
+        print("Converted Value: "+lets_convert.return_output_for_viewing()+"\n")
 
 
 def print_and_get_character_set(expected_character_set):
@@ -41,7 +50,6 @@ def print_and_get_character_set(expected_character_set):
     print("  3 - ascii")
 
     default = "1"
-
     if expected_character_set == Charsets.unicode_charset:
         default = "2"
     elif expected_character_set == Charsets.ascii_charset:
@@ -72,8 +80,9 @@ def populate_from_console():
     parser.add_argument("-sc", "--starting_character_set", help="The character set to us for the input, by default a "
                                                                 "best attempt will be made at detecting the character "
                                                                 "based off of the starting value", required=False)
-    parser.add_argument("-ec", "--ending_character_set", help="The character set to us for the output, default set is "
-                        "'" + Charsets.standard_charset + "' character set", required=False,
+    parser.add_argument("-ec", "--ending_character_set", help="The character set to us for the output, defaults to the "
+                                                              "same character set as the starting character set",
+                        required=False,
                         default=Charsets.standard_charset)
     parser.add_argument("starting_value", help="The value to convert from", type=str)
     parser.add_argument("ending_base", help="The base in which the value is to be converted to", type=int)
@@ -81,6 +90,8 @@ def populate_from_console():
 
     if args.starting_character_set is None:
         args.starting_character_set = Charsets.detect_charset(args.starting_value)
+    if args.ending_character_set is None:
+        args.ending_character_set = args.starting_character_set
 
     return Base_Converter.BaseConverter(args.starting_base, args.starting_value, args.ending_base,
                                         args.starting_character_set, args.ending_character_set)
