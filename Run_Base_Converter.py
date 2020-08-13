@@ -4,16 +4,16 @@ import argparse
 import sys
 
 import Base_Converter
+from Base_Converter_Exceptions import BaseConverterException
 import Charsets
 
 
 def main(argv):
-
     # Check to see if args were passed in and if they were then use them
+    command_line_execution = False
     if len(argv) > 0:
+        command_line_execution = True
         lets_convert = populate_from_console()
-        lets_convert.convert()
-        print(lets_convert.return_output_for_viewing())
 
     else:
         # If not print the interactive menu
@@ -40,8 +40,22 @@ def main(argv):
 
         lets_convert = Base_Converter.BaseConverter(starting_base, starting_base_value, ending_base,
                                                     starting_character_set, ending_character_set)
+
+    try:
         lets_convert.convert()
-        print("Converted Value: "+lets_convert.return_output_for_viewing()+"\n")
+    except (BaseConverterException.InvalidBase, BaseConverterException.BaseExceedsSet.BaseExceedsStandard,
+            BaseConverterException.BaseExceedsSet.BaseExceedsNormalAscii) as error:
+
+        print(error.message)
+        return
+
+    if not command_line_execution:
+        print("Converted Value: ", end="")
+
+    print(lets_convert.return_output_for_viewing())
+
+    if not command_line_execution:
+        print()
 
 
 def print_and_get_character_set(expected_character_set):
@@ -55,7 +69,7 @@ def print_and_get_character_set(expected_character_set):
     elif expected_character_set == Charsets.ascii_charset:
         default = "3"
 
-    charset = str(input("  Enter character set # (default "+str(default)+"): ") or default)
+    charset = str(input("  Enter character set # (default " + str(default) + "): ") or default)
 
     if charset == "" or charset == "1" or charset.lower() == Charsets.standard_charset:
         return Charsets.standard_charset

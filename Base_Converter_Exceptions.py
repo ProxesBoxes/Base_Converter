@@ -6,7 +6,7 @@ class BaseConverterException(Exception):
     class BaseExceedsSet(Exception):
         class BaseExceedsStandard(Exception):
             def __init__(self):
-                self.message = "Base exceeds standard ascii set please use a custom defined set"
+                self.message = "Base exceeds ascii set please use a different character set."
 
         class BaseExceedsNormalAscii(Exception):
             def __init__(self):
@@ -15,4 +15,4 @@ class BaseConverterException(Exception):
 
     class InvalidBase(Exception):
         def __init__(self, starting_or_ending):
-            self.message = "Invalid " + starting_or_ending + " base, only bases of 2 or higher are supported"
+            self.message = "Invalid " + starting_or_ending + " base, only bases of 2 or higher are supported."
