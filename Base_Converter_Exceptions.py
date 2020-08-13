@@ -16,3 +16,9 @@ class BaseConverterException(Exception):
     class InvalidBase(Exception):
         def __init__(self, starting_or_ending):
             self.message = "Invalid " + starting_or_ending + " base, only bases of 2 or higher are supported."
+
+    class ExceedsBase(Exception):
+        def __init__(self, supplied_value, base, character_set):
+            self.message = "The supplied value of \"" + str(supplied_value) + \
+                           "\" exceeds the available values for base \"" + str(base) + \
+                           "\" in the character set \""+character_set+"\""

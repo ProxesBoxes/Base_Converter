@@ -44,7 +44,11 @@ class BaseConverter:
 
         # quick logic to exit out if starting base is 10 and is the standard charset
         if self.starting_base == 10 and self.starting_base_charset == Charsets.standard_charset:
-            return int(self.starting_base_value)
+            try:
+                return int(self.starting_base_value)
+            except ValueError as error:
+                raise BaseConverterException.ExceedsBase(self.starting_base_value, self.starting_base,
+                                                         self.starting_base_charset) from error
 
         starting_value = Globals.split(self.starting_base_value)
         if self.starting_base_charset == Charsets.unicode_charset:
@@ -54,9 +58,14 @@ class BaseConverter:
 
         position = 0
         base_10_value = 0
+        index = 0
         for char in starting_value:
-            i = self.starting_base_chars.index(char)
-            base_10_value += i * (math.pow(self.starting_base, position))
+            try:
+                index = self.starting_base_chars.index(char)
+            except ValueError as error:
+                raise BaseConverterException.ExceedsBase(self.starting_base_value, self.starting_base,
+                                                         self.starting_base_charset) from error
+            base_10_value += index * (math.pow(self.starting_base, position))
             position += 1
 
         return base_10_value

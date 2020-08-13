@@ -1,6 +1,7 @@
 import unittest
 
 import Base_Converter
+from Base_Converter_Exceptions import BaseConverterException
 import Charsets
 
 
@@ -35,6 +36,18 @@ class MyTestCase(unittest.TestCase):
         self.converter.starting_base_value = "4"
         self.converter.starting_base_chars = Charsets.generate_standard_set(13)
         self.assertEqual(4, self.converter.get_base10_value())
+
+    def test_base10_exceed_base(self):
+        self.converter.starting_base = 10
+        self.converter.starting_base_value = "FF"
+        self.assertRaises(BaseConverterException.ExceedsBase, self.converter.get_base10_value)
+
+    def test_base16_exceed_base(self):
+        self.converter.starting_base = 16
+        self.converter.starting_base_value = "QQ"
+        self.converter.starting_base_charset = Charsets.standard_charset
+        self.converter.starting_base_chars = Charsets.generate_standard_set(16)
+        self.assertRaises(BaseConverterException.ExceedsBase, self.converter.get_base10_value)
 
 
 if __name__ == '__main__':
