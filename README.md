@@ -58,7 +58,8 @@ and at a minimum provide the required arguments.
         The base in which the value to convert from, default to base 10
 
    -sc, --starting_character_set
-        The character set to us for the input, defaults to standard charset
+        The character set to us for the input, by default a best attempt will be made at detecting the character based 
+        off of the starting value
 
    -ec, --ending_character_set 
         The character set to us for the output, defaults to standard charset

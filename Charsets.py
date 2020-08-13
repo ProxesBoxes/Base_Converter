@@ -66,7 +66,7 @@ def detect_charset(value):
     if re.search("^U\\+[0-9A-F]{4}", value):
         return unicode_charset
 
-    if re.search("^[\\x00-\\x2F\\x3A-\\x40\\x7B-\\x7F-\\xFF]+", value):
+    if re.search("[\\x00-\\x2F\\x3A-\\x40\\x7B-\\x7F-\\xFF]+", value):
         return ascii_charset
 
     return standard_charset

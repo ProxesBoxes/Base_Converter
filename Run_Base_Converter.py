@@ -11,22 +11,21 @@ def main(argv):
 
     # Check to see if args were passed in and if they were then use them
     if len(argv) > 0:
-        lets_convert = populate_from_console(argv)
+        lets_convert = populate_from_console()
         lets_convert.convert()
 
     else:
         # If not print the interactive menu
-        print("base converter")
-        print("select starting base:")
-        starting_base = print_and_get_base_choices()
-        print("enter starting base character set:")
-        starting_character_set = print_and_get_character_set()
-        print("enter starting base value: ")
-        starting_base_value = str(input())
-        print("select ending base:")
-        ending_base = print_and_get_base_choices()
-        print("enter ending base character set: ")
-        ending_character_set = print_and_get_character_set()
+        print("Base Converter")
+        print()
+        starting_base = int(input("Enter the starting base (default base 10): ") or 10)
+        starting_base_value = str(input("Enter starting base value: ") or "0")
+        starting_character_set = Charsets.detect_charset(starting_base_value)
+        print("Select the starting base character set")
+        starting_character_set = print_and_get_character_set(starting_character_set)
+        ending_base = int(input("Enter the ending base (default base 10): ") or 10)
+        print("Select the ending base character set")
+        ending_character_set = print_and_get_character_set(starting_character_set)
 
         lets_convert = Base_Converter.BaseConverter(starting_base, starting_base_value, ending_base,
                                                     starting_character_set, ending_character_set)
@@ -36,22 +35,19 @@ def main(argv):
     print(lets_convert.return_output_for_viewing())
 
 
-def print_and_get_base_choices():
-    print("  2 standard_binary")
-    print("  8 standard_base_8")
-    print("  10 standard_base_10")
-    print("  16 standard_hex")
-    print("  32 standard_base_32")
-    print("  Or simply enter the base value you want and we'll try our best")
-    print("  enter # choice:")
-    return int(input())
-
-
-def print_and_get_character_set():
-    print("  1 - standard (default)")
+def print_and_get_character_set(expected_character_set):
+    print("  1 - standard")
     print("  2 - unicode")
     print("  3 - ascii")
-    charset = str(input())
+
+    default = "1"
+
+    if expected_character_set == Charsets.unicode_charset:
+        default = "2"
+    elif expected_character_set == Charsets.ascii_charset:
+        default = "3"
+
+    charset = str(input("  Enter character set # (default "+str(default)+"): ") or default)
 
     if charset == "" or charset == "1" or charset.lower() == Charsets.standard_charset:
         return Charsets.standard_charset
@@ -63,8 +59,7 @@ def print_and_get_character_set():
     return charset
 
 
-def populate_from_console(lets_convert):
-
+def populate_from_console():
     parser = argparse.ArgumentParser(prog="Run_Base_Converter",
                                      description="A base converter tool which supports different character sets. "
                                                  "Currently only positive values, and positive bases are supported. The"
