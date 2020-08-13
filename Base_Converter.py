@@ -34,6 +34,8 @@ class BaseConverter:
         if self.ending_base < 2:
             raise BaseConverterException.InvalidBase("ending")
 
+        return True
+
     def populate_chars(self):
         self.starting_base_chars = Charsets.get_chars(self.starting_base, self.starting_base_charset)
         self.ending_base_chars = Charsets.get_chars(self.ending_base, self.ending_base_charset)
