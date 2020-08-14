@@ -43,9 +43,9 @@ def main(argv):
 
     try:
         lets_convert.convert()
-    except (BaseConverterException.InvalidBase, BaseConverterException.BaseExceedsSet.BaseExceedsStandard,
-            BaseConverterException.BaseExceedsSet.BaseExceedsNormalAscii, BaseConverterException.ExceedsBase) as error:
-
+    except (BaseConverterException.InvalidBase, BaseConverterException.BaseExceedsSet.Standard,
+            BaseConverterException.BaseExceedsSet.NormalAscii, BaseConverterException.ExceedsBase.Characters,
+            BaseConverterException.ExceedsBase.Position) as error:
         print(error.message)
         return
 
