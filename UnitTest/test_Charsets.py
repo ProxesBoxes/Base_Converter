@@ -38,7 +38,7 @@ class BasicConvertStaticFunctions(unittest.TestCase):
         self.assertEqual(expected, output)
 
     def test_generate_normal_ascii_set_expect_exception(self):
-        self.assertRaises(BaseConverterException.BaseExceedsSet.BaseExceedsNormalAscii,
+        self.assertRaises(BaseConverterException.BaseExceedsSet.NormalAscii,
                           Charsets.generate_normal_ascii_set, Globals.normal_ascii_max_size+10)
 
     def test_generate_ascii_offset_set(self):
@@ -47,7 +47,7 @@ class BasicConvertStaticFunctions(unittest.TestCase):
         self.assertEqual(expected, output)
 
     def test_generate_ascii_set_expect_exception(self):
-        self.assertRaises(BaseConverterException.BaseExceedsSet.BaseExceedsStandard, Charsets.generate_ascii_set,
+        self.assertRaises(BaseConverterException.BaseExceedsSet.Standard, Charsets.generate_ascii_set,
                           Globals.normal_ascii_max_size, 1)
 
     def test_get_chars_10_standard(self):

@@ -35,13 +35,13 @@ def generate_unicode_set(base):
 
 def generate_normal_ascii_set(base):
     if abs(base) > Globals.normal_ascii_max_size:
-        raise BaseConverterException.BaseExceedsSet.BaseExceedsNormalAscii
+        raise BaseConverterException.BaseExceedsSet.NormalAscii
     return generate_ascii_set(base)
 
 
 def generate_ascii_set(base, offset=0):
     if (abs(base) + offset) > Globals.normal_ascii_max_size:
-        raise BaseConverterException.BaseExceedsSet.BaseExceedsStandard
+        raise BaseConverterException.BaseExceedsSet.Standard
 
     asci_values = []
     for i in range(base):

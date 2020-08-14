@@ -44,7 +44,11 @@ class BaseConverter:
 
         # quick logic to exit out if starting base is 10 and is the standard charset
         if self.starting_base == 10 and self.starting_base_charset == Charsets.standard_charset:
-            return int(self.starting_base_value)
+            try:
+                return int(self.starting_base_value)
+            except ValueError as error:
+                raise BaseConverterException.ExceedsBase.Characters(self.starting_base_value, self.starting_base,
+                                                                    self.starting_base_charset) from error
 
         starting_value = Globals.split(self.starting_base_value)
         if self.starting_base_charset == Charsets.unicode_charset:
@@ -54,9 +58,14 @@ class BaseConverter:
 
         position = 0
         base_10_value = 0
+        index = 0
         for char in starting_value:
-            i = self.starting_base_chars.index(char)
-            base_10_value += i * (math.pow(self.starting_base, position))
+            try:
+                index = self.starting_base_chars.index(char)
+            except ValueError as error:
+                raise BaseConverterException.ExceedsBase.Characters(self.starting_base_value, self.starting_base,
+                                                                    self.starting_base_charset) from error
+            base_10_value += index * (math.pow(self.starting_base, position))
             position += 1
 
         return base_10_value
@@ -68,9 +77,19 @@ class BaseConverter:
         if cur_pos >= self.ending_base:
             self.recuse_convert(cur_pos)
         else:
-            self.ending_base_value += self.ending_base_chars[cur_pos]
+            try:
+                self.ending_base_value += self.ending_base_chars[cur_pos]
+            except IndexError as error:
+                raise BaseConverterException.ExceedsBase.Position(cur_pos, self.ending_base, self.ending_base_charset) \
+                    from error
+
         mod_val = value % self.ending_base
-        self.ending_base_value += self.ending_base_chars[math.floor(mod_val)]
+
+        try:
+            self.ending_base_value += self.ending_base_chars[math.floor(mod_val)]
+        except IndexError as error:
+            raise BaseConverterException.ExceedsBase.Position(math.floor(mod_val), self.ending_base,
+                                                              self.ending_base_charset) from error
 
     def return_output_for_viewing(self):
         output = "".join(self.ending_base_value)
