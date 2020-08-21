@@ -28,3 +28,12 @@ class BaseConverterException(Exception):
             def __init__(self, supplied_value, base, character_set):
                 self.message = "The position \""+str(supplied_value)+"\" exceeds the number of available "+\
                                "characters for base \""+str(base)+"\" in the character set \""+character_set+"\""
+
+    class StartingValue(Exception):
+        class NotSet(Exception):
+            def __init__(self):
+                self.message = "No starting value(s) were set"
+
+        class NotListOfStrings(Exception):
+            def __init__(self):
+                self.message = "StartingValues are not a list of strings"
